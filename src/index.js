@@ -1,3 +1,12 @@
 /* eslint-disable no-console */
-console.log('hi2');
-alert(1);
+import MyApp from "./App.js";
+import React from "react";
+import ReactDOM from "react-dom";
+
+console.log('hi, Eden');
+
+ReactDOM.render(<MyApp />, document.getElementById("app"));
+
+
+
+
