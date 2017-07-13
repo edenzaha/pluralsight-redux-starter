@@ -1,11 +1,15 @@
-/* eslint-disable no-console */
-import MyApp from "./App.js";
+import "babel-polyfill";
 import React from "react";
-import ReactDOM from "react-dom";
+import {render} from "react-dom";
+import {Router, browserHistory} from "react-router";
+import routes from "./routes";
+import "./styles/styles.css";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-console.log('hi, Eden');
-
-ReactDOM.render(<MyApp />, document.getElementById("app"));
+render(
+    <Router history={browserHistory} routes={routes} />,
+    document.getElementById("app")
+);
 
 
 
