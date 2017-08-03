@@ -25,6 +25,7 @@ class ManageCoursePage extends React.Component {
     saveCourse(event){       
         event.preventDefault();
         this.props.actions.saveCourse(this.state.course);
+        this.context.router.push("/courses");
     }
     render(){
         return (        
@@ -46,8 +47,26 @@ ManageCoursePage.propTypes = {
     actions:PropTypes.object.isRequired
 };
 
+//Pull in the React Router context so router is available on this.context.router
+ManageCoursePage.contextTypes = {
+    router: PropTypes.object
+};
+
+function getCourseById(courses,courseId){
+    const course = courses.filter(course => course.id == courseId);
+    if (course) return course[0];//filter returns an array
+    return null;
+}
+
 function mapStateToProps(state, ownProps) {
+    const courseId = ownProps.params.id;//from the path "/course/:id"
     let course = {id:"",watchHref:"",title:"",authorId:"",length:"",category:""};
+    
+    if (courseId){
+        course = getCourseById(state.courses, courseId);
+    }
+
+
     const auhtorsFormattedForDropdown = state.authors.map(author=>{
         return {
             value:author.id,
