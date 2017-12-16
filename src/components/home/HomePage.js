@@ -44,22 +44,47 @@ export class AgGrid extends React.Component {
  
     }
     onMenuClick(data) {
-        alert(data.item.props.eden);
+        data.item.props.commandData.execute.apply(this);
     }
     render(){
+        let commands = [
+            {
+                title:"item 1", 
+                hasChildren:true,
+                subcommands: [{title: "child item 1.1"},{title: "child item 1.2"}]
+            },
+            {
+                title:"item 2",
+                hasChildren:false,
+                execute: ()=> {alert("dana");}
+            }
+        ];
         return (
             <div>
                  <input style={{width:this.props.width}} ref={this.props.myRef} onClick={this.props.onInputClick} type="text" value="Some value" />   
-
-                <Menu onClick={this.onMenuClick} mode="vertical-right">
-                    <MenuItem key="item1">שלבים</MenuItem>
-                    <MenuItem key="item2">שלבים</MenuItem>
-                    <SubMenu key="subitem1" title="מכוניות">
-                        <SubMenu  key="subitem2" title="מכוניות מרוץ">
-                             <MenuItem eden="something" key="subitem3">למבורגיני</MenuItem>
-                        </SubMenu>
-                    </SubMenu>
-                </Menu>
+                   <Menu onClick={this.onMenuClick} mode="vertical-right">                                        
+                    {
+                        commands.map((command)=> {
+                              if (command.hasChildren == true)
+                              {                                                                   
+                                 return <SubMenu title={command.title}>
+                                         {
+                                             command.subcommands.map((subcommand)=>(
+                                                  <MenuItem>{subcommand.title}</MenuItem>
+                                             ))
+                                         }
+                                     </SubMenu>;
+                              }
+                              else
+                              {
+                                 return <MenuItem commandData={command}>{command.title}</MenuItem>;
+                              }
+                              
+                        })
+                    }   
+                   </Menu>
+    
+               
             </div>
             
         );
